@@ -3,7 +3,9 @@ const Vue = require('vue')
 //创建服务器实例
 const server = require('express')()
 // 第 2 步：创建一个 renderer
-const renderer = require('vue-server-renderer').createRenderer()
+const renderer = require('vue-server-renderer').createRenderer({
+    template: require('fs').readFileSync('./index.template.html', 'utf-8')
+  })
 
 //服务器设置路由
 server.get('*', (req, res) => {
@@ -24,16 +26,7 @@ server.get('*', (req, res) => {
             res.status(500).end('Internal Server Error')
             return
         }
-        res.end(`
-        <!DOCTYPE html>
-        <html lang="en">
-          <head>
-            <meta charset='utf-8'></meta>
-            <title >Hello</title>
-          </head>
-          <body>${html}</body>
-        </html>
-      `)
+        res.end(html)
     })
 })
 
